@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       children: [
                         Icon(Icons.lock, color: Colors.amber),
                         SizedBox(width: 8),
-                        Text('Pengguna', style: TextStyle(
+                        Text('pengguna', style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold,
                         ),),
                       ],
