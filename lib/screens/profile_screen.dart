@@ -6,8 +6,7 @@ class ProfileScreen extends StatefulWidget{
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
-// 
-//
+
 class _ProfileScreenState extends State<ProfileScreen>{
   // TODO: 1. Deklarasikan variabel yang dibutuhkan
   bool isSignedIn = false;
@@ -60,18 +59,18 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        children: [
-                          Icon(Icons.lock, color: Colors.amber),
-                          SizedBox(width: 8),
-                          Text('Pengguna', style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold,
-                          ),),
-                        ],
-                      ),),
+                    child: Row(
+                      children: [
+                        Icon(Icons.lock, color: Colors.amber),
+                        SizedBox(width: 8),
+                        Text('Pengguna', style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold,
+                        ),),
+                      ],
+                    ),),
                     Expanded(
                       child: Text(': $userName', style: TextStyle(
-                          fontSize: 18),),),
+                        fontSize: 18),),),
                   ],
                 ),
 
