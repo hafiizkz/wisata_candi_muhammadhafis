@@ -13,6 +13,21 @@ class _ProfileScreenState extends State<ProfileScreen>{
   String fullName = '';
   String userName = '';
   int favoriteCandiCount = 0;
+
+  // TODO: 5, Implementasi fungsi signIn
+  void signIn (){
+    setState(() {
+      isSignedIn = !isSignedIn;
+    });
+  }
+
+  // TODO: 6, Implementasi fungsi signOut
+  void signOut (){
+    setState(() {
+      isSignedIn = !isSignedIn;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       children: [
                         Icon(Icons.lock, color: Colors.amber),
                         SizedBox(width: 8),
-                        Text('pengguna', style: TextStyle(
+                        Text('Pengguna', style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold,
                         ),),
                       ],
@@ -95,8 +110,38 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     if(isSignedIn) Icon(Icons.edit),
                   ],
                 ),
+                SizedBox(height: 4),
+                Divider(color: Colors.deepPurple[100]),
+                SizedBox(height: 4),
+                Row(
+                  children: [
+                    SizedBox(width: MediaQuery.of(context).size.width/3,
+                      child: Row(
+                        children: [
+                          Icon(Icons.favorite, color: Colors.red),
+                          SizedBox(width: 8),
+                          Text('Favorite', style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold
+                          ),)
+                        ],
+                      ),
+                    ),
+                    Expanded(child: Text('0', style: TextStyle(
+                        fontSize: 18
+                    ), ),),
+                    if(isSignedIn) Icon(Icons.edit)
+                  ],
+                ),
                 // TODO: 4. Buat ProfileActions yang berisi TextButton sign in/out
-
+                SizedBox(height: 4),
+                Divider(color: Colors.deepPurple[100]),
+                SizedBox(height: 20),
+                isSignedIn ? TextButton(
+                    onPressed: signOut,
+                    child: Text('Sign Out')) // TextButton
+                    : TextButton(
+                    onPressed: signIn,
+                    child: Text('Sign In')),
               ],
             ),
           ),
