@@ -3,6 +3,9 @@ import 'package:wisata_candi_muhammadhafis/data/candi_data.dart';
 import 'package:wisata_candi_muhammadhafis/screens/profile_screen.dart';
 import 'package:wisata_candi_muhammadhafis/screens/signin_screen.dart';
 import 'screens/detail_screen.dart';
+import 'package:wisata_candi_muhammadhafis/screens/signup_screen.dart';
+import 'package:wisata_candi_muhammadhafis/screens/search_screen.dart';
+import 'package:wisata_candi_muhammadhafis/screens/home_screen.dart';
 
 
 void main() {
@@ -14,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Wisata Candi',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: SignInScreen(),
+      home: HomeScreen(),
     );
   }
 }
