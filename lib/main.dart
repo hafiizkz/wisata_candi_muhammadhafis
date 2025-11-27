@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        initialRoute: '/signin',
+        initialRoute: '/',
         routes: {
           '/': (context) => const MainScreen(),
           '/signin': (context) => const SignInScreen(),

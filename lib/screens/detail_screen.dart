@@ -1,12 +1,39 @@
 import'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wisata_candi_muhammadhafis/models/candi.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final Candi candi;
-
   const DetailScreen({super.key, required this.candi});
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool isFavorite = false;
+  bool isSignedIn = false;
+
+  Future<void> _toggleFavorite() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Memeriksa apakah pengguna sudah sign in
+    if (!isSignedIn) {
+      // Jika belum sign in, arahkan ke SignInScreen
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/signin');
+      });
+      return;
+    }
+    bool favoriteStatus = !isFavorite;
+    prefs.setBool('favorite_${widget.candi.name}', favoriteStatus);
+    setState(() {
+      isFavorite = favoriteStatus;
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +50,7 @@ class DetailScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
-                      candi.imageAsset,
+                      widget.candi.imageAsset,
                       width: double.infinity,
                       height: 300,
                       fit: BoxFit.cover,
@@ -64,17 +91,46 @@ class DetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        candi.name,
+                        widget.candi.name,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.favorite_border),
-                      ),
-                    ],
+                        onPressed: () {
+                          // Memeriksa status sign in
+                          void _checkSignInStatus() async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            bool signedIn = prefs.getBool('isSignedIn') ?? false;
+                            setState(() {
+                              isSignedIn = signedIn;
+                            });
+                          }
+                          // Memeriksa status favorit
+                          void _loadFavoriteStatus() async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            bool favorite = prefs.getBool('favorite_${widget.candi.name}') ?? false;
+                            setState(() {
+                              isFavorite = favorite;
+                            });
+                          }
+                          Future<void> _toggleFavorite() async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            bool favoriteStatus = !isFavorite;
+                            prefs.setBool('favorite_${widget.candi.name}', favoriteStatus);
+                            setState(() {
+                              isFavorite = favoriteStatus;
+                            });
+                          }
+                          _toggleFavorite();
+                        },
+                        icon: Icon(isSignedIn && isFavorite
+                        ? Icons.favorite
+                            : Icons.favorite_border,
+                          color: isSignedIn && isFavorite ? Colors.red : null,)
+                        )
+                        ],
                   ),
                   SizedBox(height: 16),
                   // Info tengah (lokasi, dibangun, tipe)
@@ -89,7 +145,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${candi.location}'),
+                      Text(': ${widget.candi.location}'),
                     ],
                   ),
                   Row(
@@ -103,7 +159,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${candi.built}'),
+                      Text(': ${widget.candi.built}'),
                     ],
                   ),
                   Row(
@@ -117,7 +173,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${candi.type}'),
+                      Text(': ${widget.candi.type}'),
                     ],
                   ),
                   SizedBox(height: 16),
@@ -138,7 +194,7 @@ class DetailScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 6),
                         Text(
-                          candi.description,
+                          widget.candi.description,
                           style: TextStyle(fontSize: 14, color: Colors.black87),
                         ),
                         SizedBox(height: 16),
@@ -168,7 +224,7 @@ class DetailScreen extends StatelessWidget {
                     height: 100,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: candi.imageUrls.length,
+                      itemCount: widget.candi.imageUrls.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.only(left: 8),
@@ -185,7 +241,7 @@ class DetailScreen extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
-                                  imageUrl: candi.imageUrls[index],
+                                  imageUrl: widget.candi.imageUrls[index],
                                   width: 120,
                                   height: 120,
                                   fit: BoxFit.cover,
